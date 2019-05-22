@@ -1,6 +1,7 @@
 
 <!-- <canvas class="canvas" (dragstart)="drag($event)" 
 (drop)="drop($event)" draggable="true" (dragover)="allowDrop($event)" (click)="mouseClick($event)"  #canvas></canvas> -->
+<<<<<<< HEAD
 <!-- <div (mousemove)="onParent($event)" > -->
     <canvas id="canvas" class="canvas" (mousemove)="mouseMove($event,false)" (mousedown)="mouseDown($event)" (mouseup)="mouseUp($event)" 
     
@@ -22,6 +23,19 @@
 
 Color : <select name="Color" (change)="cursorColor($event.target.value)">
         <option value="black" >black</option>
+=======
+
+<canvas id="canvas" class="canvas" (mousemove)="mouseClick()"
+ #canvas></canvas>
+
+<div>
+<button id="button" (mousemove)="remove($event)">Eraser</button>
+
+<button  class="button" (mousemove)="changeCursor($event)">Pencil</button>
+
+Color : <select  (change)="cursorColor($event.target.value)">
+        <option value="black" selected="selected">black</option>
+>>>>>>> 69f15af0cd7534e41536487854b48d56ce508373
         <option value="blue" >blue</option>
         <option value="red">red</option>
         <option value="green">green</option>
@@ -32,5 +46,9 @@ Color : <select name="Color" (change)="cursorColor($event.target.value)">
         <option value="skyblue">skyblue</option>
     </select>
 
+<<<<<<< HEAD
    
+=======
+    <button class="button" (onload)="init()">Rectangle</button>
+>>>>>>> 69f15af0cd7534e41536487854b48d56ce508373
 </div>

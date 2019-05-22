@@ -33,6 +33,24 @@ export class CanvasComponent implements AfterViewInit {
    drawerTypes = ["pencil", "erasor" , "square" , "circle"];
 
    drawerType = this.drawerTypes[0];
+  constructor(private elementRef:ElementRef) {}
+  
+  @Input() public width = 600;
+  @Input() public height = 400;
+
+  lastEvent = null;
+ 
+  rect :any= {
+     w:"",
+     h:""
+};
+rectStartXArray: any [];
+rectStartYArray: any [];
+rectWArray: any[];
+rectHArray: any[];
+    drag = false;
+    offsetLeft:any;
+    offsetTop: any;
 
 
 
@@ -41,8 +59,8 @@ export class CanvasComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-
     this.cx = canvasEl.getContext('2d');
+    
 
   
     canvasEl.width = this.width;
@@ -53,6 +71,7 @@ export class CanvasComponent implements AfterViewInit {
 }
 
 
+<<<<<<< HEAD
   
 mouseDown(event) {
     if (this.lastEvent == null) {
@@ -136,6 +155,101 @@ mouseDown(event) {
 
     const rect = canvas.getBoundingClientRect();
 
+
+   this.captureEvents(canvasEl);
+  }
+
+  private captureEvents(canvasEl: HTMLCanvasElement) {
+    // this will capture all mousedown events from the canvas element
+    
+    fromEvent(canvasEl, 'mousedown')
+      .pipe(
+        switchMap((e) => {
+          // after a mouse down, we'll record all mouse moves
+          return fromEvent(canvasEl, 'mousemove')
+            .pipe(
+              // we'll stop (and unsubscribe) once the user releases the mouse
+              // this will trigger a 'mouseup' event    
+              takeUntil(fromEvent(canvasEl, 'mouseup')),
+              // we'll also stop (and unsubscribe) once the mouse leaves the canvas (mouseleave event)
+              takeUntil(fromEvent(canvasEl, 'mouseleave')),
+              // pairwise lets us get the previous value to draw a line from
+              // the previous point to the current point    
+              pairwise()
+            )
+        })
+      )
+      .subscribe((res: [MouseEvent, MouseEvent]) => {
+        const rect = canvasEl.getBoundingClientRect();
+        canvasEl.getBoundingClientRect();
+        // previous and current position with the offset
+        const prevPos = {
+          x: res[0].clientX - rect.left,
+          y: res[0].clientY - rect.top
+        };
+  
+        const currentPos = {
+          x: res[1].clientX - rect.left,
+          y: res[1].clientY - rect.top
+        };
+  
+        // this method we'll implement soon to do the actual drawing
+        this.drawOnCanvas(prevPos, currentPos);
+      });
+  }
+  
+  
+  init() {
+    console.log("hi-------------->>>>>>>>");
+    const canvas = event.target;
+     console.log(event);
+    canvas.addEventListener('mousedown',this. mouseDown, false);
+	 canvas.addEventListener('mouseup',this. mouseUp, false);
+	 canvas.addEventListener('mousemove',this. mouseMove, false);
+  }
+  
+
+  
+  
+  mouseDown(event) {
+    // if (this.lastEvent == null) {
+    //   this.lastEvent = event;
+    //   return;
+    // }
+  //  this.cx.beginPath();
+    // const canvas = event.target;
+    // console.log(event);
+    // const rect = canvas.getBoundingClientRect();
+    // rect.startX = event.pageX -  this.offsetLeft;
+    // rect.startY = event.pageY -  this.offsetTop;
+    // this.drag = true;
+    this.rect.startX = event.pageX - this.offsetLeft;
+    this.rect.startY = event.pageY - this.offsetTop;
+    this.drag = true;
+    
+   
+  }
+
+  mouseUp() { 
+    this.rectStartXArray[this.rectStartXArray.length] = this.rect.startX;
+    this.rectStartYArray[this.rectStartYArray.length] = this.rect.startY;
+    this.rectWArray[this.rectWArray.length] =this. rect.w;
+    this.rectHArray[this.rectHArray.length] = this.rect.h;
+    this.drag = false; 
+  }
+  
+
+   mouseClick(event){
+    
+    if (this.lastEvent == null) {
+      this.lastEvent = event;
+      return;
+    }
+    this.cx.beginPath();
+    const canvas = event.target;
+    console.log(event);
+    const rect = canvas.getBoundingClientRect();
+>>>>>>> 69f15af0cd7534e41536487854b48d56ce508373
     const prevPos = {
 
       x: this.lastEvent.clientX - rect.left,
